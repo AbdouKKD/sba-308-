@@ -37,14 +37,15 @@ function getLearnerData(arr) {
         };
     }
 
-  const submissionDate = new Date(submission.submission.submitted_at);
+    const assignmentInfo = assignmentsMap[assignmentId];
+    const submissionDate = new Date(submission.submission.submitted_at);
 
-        if (submissionDate <= assignmentsMap.due_at) {
-            // No late penalty
-            addSubmissionData(results, learnerId, assignmentId, submission.submission.score, assignmentInfo.points_possible);
-        } else {
-            // Apply late penalty
-            const lateScore = Math.max(0, submission.submission.score - (0.1 * assignmentInfo.points_possible));
-            addSubmissionData(results, learnerId, assignmentId, lateScore, assignmentMap.points_possible);
-        }
+    if (submissionDate <= assignmentInfo.due_at) {
+        // No late penalty
+        addSubmissionData(results, learnerId, assignmentId, submission.submission.score, assignmentInfo.points_possible);
+    } else {
+        // Apply late penalty
+        const adjustedScore = Math.max(0, submission.submission.score - (0.1 * assignmentInfo.points_possible));
+        addSubmissionData(results, learnerId, assignmentId, adjustedScore, assignmentInfo.points_possible);
     }
+}
