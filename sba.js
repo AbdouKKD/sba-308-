@@ -1,6 +1,6 @@
 const CourseInfo = { id: 451, name: "Introduction to JavaScript" };
 // The provided assignment group.
-const AssignmentGroup = {
+const assignmentGroup = {
     id: 12345, name: "Fundamentals of JavaScript", course_id: 451, group_weight: 25, assignments: [
         { id: 1, name: "Declare a Variable", due_at: "2023-01-25", points_possible: 50 },
         { id: 2, name: "Write a Function", due_at: "2023-02-27", points_possible: 150 },
@@ -19,68 +19,21 @@ const LearnerSubmissions = [
 //need the average of each learners grades, add up their scores then divide
 
 
-function getLearnerData(courseInfo, assignmentGroup, learnerSubmissions) {
-    console.log("Input Parameters:", { courseInfo, assignmentGroup, learnerSubmissions });
-
-    // Validate assignment group belongs to the course
+function getLearnerData(arr) {
     if (assignmentGroup.course_id !== courseInfo.id) {
-        throw new Error("Assignment group does not belong to the specified course.");
+        throw new Error('Invalid input: AssignmentGroup does not belong to CourseInfo.');
     }
-    console.log("Assignment group validated.");
+    const results = {};
+    const assignmentsMap = {};
 
-    let results = {};
-
-    for (const submission of learnerSubmissions) {
-        console.log("Processing submission:", submission);
-
-        const { learner_id, assignment_id, submission: { submitted_at, score } } = submission;
-        const assignment = assignmentGroup.assignments.find(a => a.id === assignment_id);
-
-        if (!assignment) {
-            console.error(`Assignment ID ${assignment_id} not found in the assignment group.`);
-            continue;
+    for (const assignment of assignmentGroup.assignments) {
+        if (typeof assignment.id !== 'number' || typeof assignment.points_possible !== 'number') {
+            throw new Error(`Invalid data: Assignment ID or points_possible is not an assignment ${assignment.id}.`);
         }
-        console.log(`Found assignment for ID ${assignment_id}:`, assignment);
-
-        const dueDate = new Date(assignment.due_at);
-        const submittedDate = new Date(submitted_at);
-        console.log(`Due date: ${dueDate}, Submitted date: ${submittedDate}`);
-
-        if (submittedDate > dueDate) {
-            score -= (assignment.points_possible * 0.1);
-            console.log(`Submission late. Adjusted score: ${score}`);
-        }
-
-        if (assignment.points_possible <= 0) {
-            console.error(`Assignment ID ${assignment_id} has invalid points_possible: ${assignment.points_possible}`);
-            continue;
-        }
-
-        if (!results[learner_id]) {
-            results[learner_id] = { id: learner_id, avg: 0, scores: {}, totalPoints: 0, totalScore: 0 };
-            console.log(`Initialized data for learner ID ${learner_id}.`);
-        }
-
-        const percentage = (score / assignment.points_possible) * 100;
-        results[learner_id].scores[assignment_id] = percentage;
-        results[learner_id].totalScore += score;
-        results[learner_id].totalPoints += assignment.points_possible;
-
-        console.log(`Updated scores for learner ID ${learner_id}:`, results[learner_id]);
+        assignmentsMap[assignment.id] = {
+            points_possible: assignment.points_possible,
+            due_at: new Date(assignment.due_at),
+            name: assignment.name,
+        };
     }
 
-    const finalResults = Object.values(results).map(learner => {
-        learner.avg = learner.totalPoints > 0 ? (learner.totalScore / learner.totalPoints) * 100 : 0;
-        return learner;
-    });
-
-    console.log("Final results calculated:", finalResults);
-    return finalResults;
-}
-
-try {
-    const learnerResults = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
-    console.log(JSON.stringify(learnerResults, null, 2));
-} catch (error) {
-    console.error("Error:", error.message);
-}
