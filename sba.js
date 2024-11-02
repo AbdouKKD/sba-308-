@@ -19,33 +19,3 @@ const LearnerSubmissions = [
 //need the average of each learners grades, add up their scores then divide
 
 
-function getLearnerData(arr) {
-    if (assignmentGroup.course_id !== courseInfo.id) {
-        throw new Error('Invalid input: AssignmentGroup does not belong to CourseInfo.');
-    }
-    const results = {};
-    const assignmentsMap = {};
-
-    for (const assignment of assignmentGroup.assignments) {
-        if (typeof assignment.id !== 'number' || typeof assignment.points_possible !== 'number') {
-            throw new Error(`Invalid data: Assignment ID or points_possible is not an assignment ${assignment.id}.`);
-        }
-        assignmentsMap[assignment.id] = {
-            points_possible: assignment.points_possible,
-            due_at: new Date(assignment.due_at),
-            name: assignment.name,
-        };
-    }
-
-    const assignmentInfo = assignmentsMap[assignmentId];
-    const submissionDate = new Date(submission.submission.submitted_at);
-
-    if (submissionDate <= assignmentInfo.due_at) {
-        // No late penalty
-        addSubmissionData(results, learnerId, assignmentId, submission.submission.score, assignmentInfo.points_possible);
-    } else {
-        // Apply late penalty
-        const adjustedScore = Math.max(0, submission.submission.score - (0.1 * assignmentInfo.points_possible));
-        addSubmissionData(results, learnerId, assignmentId, adjustedScore, assignmentInfo.points_possible);
-    }
-}
