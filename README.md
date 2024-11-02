@@ -5,13 +5,25 @@
 >>>>>>> af882d2b9d413068c4a9c23510e607fca2e3538b
 
 
-What It Does
+What This Code Does
 
-The getLearnerData function dives deep into your course data,  calculating late scores based on submission date and providing an overview of learners’ performance. It delivers insights that help teachers understand their students’ progress at a glance.
+    Learning About a Class:
+        There’s a class called "Introduction to JavaScript."
+        It has some homework tasks that students need to do.
 
-   Input Validation: Ensures your data is clean and consistent by verifying that assignments belong to the correct course.
-   Score Adjustment: Applies a thoughtful penalty for late submissions, maintaining fairness in evaluations.
-   Average Calculation: Computes average scores as percentages, making it easy to assess overall learner performance.
+    What Students Did:
+        Each student tried their homework and wrote down what they got.
+
+    Checking Homework:
+        The code looks at what each student did and sees if they did it on time.
+        If they were late, it takes away a little bit of their points.
+
+    Finding Averages:
+        The code adds up all the points for each student and figures out their average score.
+        Then it says if they did a great job, a good job, or if they need to try harder.
+
+    Error Checking:
+        If something goes wrong, like if the class ID doesn’t match, it tells us with a message.
    
 
     
