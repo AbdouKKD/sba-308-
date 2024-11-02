@@ -9,10 +9,7 @@ What This Code Does
 
     Learning About a Class:
         There’s a class called "Introduction to JavaScript."
-        It has some homework tasks that students need to do.
-
-    What Students Did:
-        Each student tried their homework and wrote down what they got.
+        It has some assignments that students need to do.
 
     Checking Homework:
         The code looks at what each student did and sees if they did it on time.
